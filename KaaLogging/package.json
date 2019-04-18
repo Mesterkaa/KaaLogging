@@ -4,9 +4,29 @@
   "description": "KaaLogging",
   "main": "server.js",
   "author": {
-    "name": ""
+    "name": "Anders Wolsing Kaa"
+  },
+  "scripts": {
+    "build": "browserify public/app.js -o public/bundle.js",
+    "watch": "watchify public/app.js -o public/bundle.js"
   },
   "devDependencies": {
-    "@types/node": "^8.0.14"
+    "@types/node": "^8.0.14",
+    "browserify": "^16.2.3",
+    "watchify": "^3.11.1"
+  },
+  "dependencies": {
+    "@types/angular": "^1.6.54",
+    "@types/angular-route": "^1.7.0",
+    "@types/body-parser": "^1.17.0",
+    "@types/express": "^4.16.1",
+    "@types/jquery": "^3.3.29",
+    "angular": "^1.7.8",
+    "angular-route": "^1.7.8",
+    "body-parser": "^1.18.3",
+    "bootstrap": "^4.3.1",
+    "express": "^4.16.4",
+    "jquery": "^3.4.0",
+    "mongojs": "^2.6.0"
   }
 }
