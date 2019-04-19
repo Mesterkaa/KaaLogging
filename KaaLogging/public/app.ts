@@ -2,12 +2,16 @@
 import { routes, KaaIroute, KaaIrouteConfig } from "./routes";
 var app = angular.module("KaaApp", ['ngRoute']);
 
+app.factory("user", function () {
+    return {};
+})
+
 var appControllerSelfCall: (x: KaaIroute[]) => void = (x: KaaIroute[]) => {
     for (var route of x) {
         if (Array.isArray(route.config)) {
             appControllerSelfCall(route.config);
         } else {
-            app.controller(route.config.Rcontroller, ['$scope', '$http', '$timeout', route.config.Acontroller])
+            app.controller(route.config.Rcontroller, ['$scope', '$http', '$timeout', "user", route.config.Acontroller])
         }
     }
 }
@@ -31,3 +35,6 @@ function routeConfig($routeProvider: ng.route.IRouteProvider): void {
     }
     routeConfigSelfCall(routes)
 }
+
+import { NavController } from './Pages/Nav/controller';
+app.controller("NavController", ['$scope', '$http', '$timeout',"user", NavController])

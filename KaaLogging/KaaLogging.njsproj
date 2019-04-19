@@ -7,6 +7,7 @@
     <RootNamespace>KaaLogging</RootNamespace>
     <LastActiveSolutionConfig>Debug|Any CPU</LastActiveSolutionConfig>
     <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
+    <LaunchUrl>http://mesterkaa.hopto.org:1337</LaunchUrl>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -45,7 +46,12 @@
     <TypeScriptCompile Include="public\Pages\Home\viewModel.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="public\Pages\Nav\controller.ts" />
+    <TypeScriptCompile Include="public\Pages\Nav\viewModel.ts" />
     <TypeScriptCompile Include="public\routes.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="routes.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="server.ts" />
@@ -65,8 +71,10 @@
   <ItemGroup>
     <Folder Include="css\" />
     <Folder Include="public\" />
+    <Folder Include="public\Logo\" />
     <Folder Include="public\Pages\" />
     <Folder Include="public\Pages\Home\" />
+    <Folder Include="public\Pages\Nav\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="public\bundle.js" />

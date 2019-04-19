@@ -4,7 +4,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="google-signin-client_id" content="642311383172-771qivssmq9g7l38neqvp3jkh1koo1b2.apps.googleusercontent.com">
 
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="/scripts/jquery/dist/jquery.js"></script>
     <script src="/scripts/angular/angular.js"></script>
     <script src="/scripts/angular-route/angular-route.js"></script>
@@ -18,7 +20,15 @@
 
     <title>KaaLogging</title>
 </head>
-<body ng-app="KaaApp">
+<body ng-app="KaaApp" ng-controller="NavController">
+    <ul>
+        <li><a href="#!">See Logs</a></li>
+        <li><a href="#!">Make Logs</a></li>
+        <li><a ng-click="NavViewModel.checkuser()">Test</a></li>
+        <li style="float:right"><a href="#!" class="active">User profil</a></li>
+        <li style="float:right"><div class="g-signin2" data-onsuccess="onSignIn"></div></li>
+        <li style="float:right"><a ng-click="NavViewModel.signOut()" class="active">Logout</a></li>
+    </ul>
     <main>
         <section ng-view></section>
     </main>

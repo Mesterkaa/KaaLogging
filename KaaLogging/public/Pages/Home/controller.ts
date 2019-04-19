@@ -3,9 +3,12 @@ export class HomeController {
     private _viewModel: HomeViewModel;
 
     constructor(
-        $scope
+        $scope,
+        $http: angular.IHttpService,
+        $timeout: angular.ITimeoutService,
+        user: any
     ) {
-        this._viewModel = new HomeViewModel();
+        this._viewModel = new HomeViewModel($http, user);
         $scope.ViewModel = this._viewModel;
     }
 }

@@ -36443,8 +36443,8 @@ module.exports = angular;
 Object.defineProperty(exports, "__esModule", { value: true });
 const viewModel_1 = require("./viewModel");
 class HomeController {
-    constructor($scope) {
-        this._viewModel = new viewModel_1.HomeViewModel();
+    constructor($scope, $http, $timeout, user) {
+        this._viewModel = new viewModel_1.HomeViewModel($http, user);
         $scope.ViewModel = this._viewModel;
     }
 }
@@ -36454,8 +36454,19 @@ exports.HomeController = HomeController;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class HomeViewModel {
-    constructor() {
-        console.log("Test");
+    constructor($http, user) {
+        this.body = { KaaToken: "Anders" };
+        this.change = () => {
+            this.body.KaaToken = this.body.KaaToken == "" ? undefined : this.body.KaaToken;
+            this.body.Category = this.body.Category == "" ? undefined : this.body.Category;
+            this.body.Title = this.body.Title == "" ? undefined : this.body.Title;
+            $http.post('/ViewLogs', this.body).then((resp) => {
+                this.response = resp.data;
+                console.log(resp);
+            });
+        };
+        this.change();
+        user.name = "Anders";
     }
 }
 exports.HomeViewModel = HomeViewModel;
@@ -36463,17 +36474,53 @@ exports.HomeViewModel = HomeViewModel;
 },{}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const viewModel_1 = require("./viewModel");
+class NavController {
+    constructor($scope, $http, $timeout, user) {
+        this._viewModel = new viewModel_1.NavViewModel($http, user);
+        $scope.NavViewModel = this._viewModel;
+    }
+}
+exports.NavController = NavController;
+
+},{"./viewModel":6}],6:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class NavViewModel {
+    constructor($http, user) {
+        this.signOut = () => {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                console.log('User signed out.');
+            });
+        };
+        this.onSignIn = (googleUser) => {
+            console.log(googleUser.getBasicProfile().getId());
+        };
+        window["onSignIn"] = this.onSignIn;
+        this.checkuser = () => {
+            console.log(user);
+        };
+    }
+}
+exports.NavViewModel = NavViewModel;
+
+},{}],7:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const angular = require("angular");
 const routes_1 = require("./routes");
 var app = angular.module("KaaApp", ['ngRoute']);
-console.log(routes_1.routes);
+app.factory("user", function () {
+    return {};
+});
 var appControllerSelfCall = (x) => {
     for (var route of x) {
         if (Array.isArray(route.config)) {
             appControllerSelfCall(route.config);
         }
         else {
-            app.controller(route.config.Rcontroller, ['$scope', '$http', '$timeout', route.config.Acontroller]);
+            app.controller(route.config.Rcontroller, ['$scope', '$http', '$timeout', "user", route.config.Acontroller]);
         }
     }
 };
@@ -36496,8 +36543,10 @@ function routeConfig($routeProvider) {
     };
     routeConfigSelfCall(routes_1.routes);
 }
+const controller_1 = require("./Pages/Nav/controller");
+app.controller("NavController", ['$scope', '$http', '$timeout', "user", controller_1.NavController]);
 
-},{"./routes":6,"angular":2}],6:[function(require,module,exports){
+},{"./Pages/Nav/controller":5,"./routes":8,"angular":2}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const controller_1 = require("./Pages/Home/controller");
@@ -36505,4 +36554,4 @@ exports.routes = [
     { name: 'HOME', config: { URL: "", templateURL: "./Pages/Home/Home.htm", Rcontroller: "HomeController", Acontroller: controller_1.HomeController } }
 ];
 
-},{"./Pages/Home/controller":3}]},{},[5]);
+},{"./Pages/Home/controller":3}]},{},[7]);
