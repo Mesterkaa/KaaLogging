@@ -8,7 +8,7 @@ export class HomeController {
         $timeout: angular.ITimeoutService,
         user: any
     ) {
-        this._viewModel = new HomeViewModel($http, user);
+        this._viewModel = new HomeViewModel($scope, $http, user);
         $scope.ViewModel = this._viewModel;
     }
 }

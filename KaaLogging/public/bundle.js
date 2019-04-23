@@ -36444,7 +36444,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const viewModel_1 = require("./viewModel");
 class HomeController {
     constructor($scope, $http, $timeout, user) {
-        this._viewModel = new viewModel_1.HomeViewModel($http, user);
+        this._viewModel = new viewModel_1.HomeViewModel($scope, $http, user);
         $scope.ViewModel = this._viewModel;
     }
 }
@@ -36454,8 +36454,13 @@ exports.HomeController = HomeController;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class HomeViewModel {
-    constructor($http, user) {
-        this.body = { KaaToken: "Anders" };
+    constructor($scope, $http, user) {
+        this.body = { KaaToken: "" };
+        $scope.$watch(function () { return user; }, (newValue, oldValue, scope) => {
+            console.log(newValue);
+            this.body.KaaToken = newValue.KaaToken;
+            this.change();
+        }, true);
         this.change = () => {
             this.body.KaaToken = this.body.KaaToken == "" ? undefined : this.body.KaaToken;
             this.body.Category = this.body.Category == "" ? undefined : this.body.Category;
@@ -36466,7 +36471,6 @@ class HomeViewModel {
             });
         };
         this.change();
-        user.name = "Anders";
     }
 }
 exports.HomeViewModel = HomeViewModel;
@@ -36477,7 +36481,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const viewModel_1 = require("./viewModel");
 class NavController {
     constructor($scope, $http, $timeout, user) {
-        this._viewModel = new viewModel_1.NavViewModel($http, user);
+        this._viewModel = new viewModel_1.NavViewModel($scope, $http, user);
         $scope.NavViewModel = this._viewModel;
     }
 }
@@ -36487,19 +36491,27 @@ exports.NavController = NavController;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class NavViewModel {
-    constructor($http, user) {
+    constructor($scope, $http, user) {
         this.signOut = () => {
             var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {
-                console.log('User signed out.');
+            auth2.signOut().then(() => {
+                console.log(this.googleUser.getBasicProfile().getName() + " signed out");
             });
+            user.KaaToken = "";
         };
-        this.onSignIn = (googleUser) => {
-            console.log(googleUser.getBasicProfile().getId());
+        this.onSucces = (User) => {
+            this.googleUser = User;
+            $http.get('/SignIn/' + User.getAuthResponse().id_token).then((resp) => {
+                user.KaaToken = resp.data;
+                user.Name = User.getBasicProfile().getName();
+                user.Email = User.getBasicProfile().getEmail();
+                user.ImageUrl = User.getBasicProfile().getImageUrl();
+            });
+            $scope.$apply();
         };
-        window["onSignIn"] = this.onSignIn;
+        window["onSucces"] = this.onSucces;
         this.checkuser = () => {
-            console.log(user);
+            console.log(gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile());
         };
     }
 }

@@ -8,7 +8,7 @@ export class NavController {
         $timeout: angular.ITimeoutService,
         user: any
     ) {
-        this._viewModel = new NavViewModel($http, user);
+        this._viewModel = new NavViewModel($scope, $http, user);
         $scope.NavViewModel = this._viewModel;
     }
 }

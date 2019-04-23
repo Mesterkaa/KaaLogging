@@ -1,8 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class HomeViewModel {
-    constructor($http, user) {
-        this.body = { KaaToken: "Anders" };
+    constructor($scope, $http, user) {
+        this.body = { KaaToken: "" };
+        $scope.$watch(function () { return user; }, (newValue, oldValue, scope) => {
+            console.log(newValue);
+            this.body.KaaToken = newValue.KaaToken;
+            this.change();
+        }, true);
         this.change = () => {
             this.body.KaaToken = this.body.KaaToken == "" ? undefined : this.body.KaaToken;
             this.body.Category = this.body.Category == "" ? undefined : this.body.Category;
@@ -13,7 +18,6 @@ class HomeViewModel {
             });
         };
         this.change();
-        user.name = "Anders";
     }
 }
 exports.HomeViewModel = HomeViewModel;
