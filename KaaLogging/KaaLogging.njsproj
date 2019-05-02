@@ -40,14 +40,20 @@
     <TypeScriptCompile Include="public\app.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="public\Pages\Home\controller.ts">
+    <TypeScriptCompile Include="public\Pages\GetLogs\controller.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="public\Pages\Home\viewModel.ts">
+    <TypeScriptCompile Include="public\Pages\GetLogs\viewModel.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="public\Pages\Home\controller.ts" />
+    <TypeScriptCompile Include="public\Pages\Home\viewModel.ts" />
     <TypeScriptCompile Include="public\Pages\Nav\controller.ts" />
     <TypeScriptCompile Include="public\Pages\Nav\viewModel.ts" />
+    <TypeScriptCompile Include="public\Pages\PostLogs\controller.ts" />
+    <TypeScriptCompile Include="public\Pages\PostLogs\viewModel.ts" />
+    <TypeScriptCompile Include="public\Pages\User\controller.ts" />
+    <TypeScriptCompile Include="public\Pages\User\viewModel.ts" />
     <TypeScriptCompile Include="public\routes.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -58,23 +64,32 @@
     <Content Include="css\Global.css">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Keys\cert.pem" />
+    <Content Include="Keys\key.pem" />
     <Content Include="public\index.html">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="public\Pages\Home\Home.htm">
+    <Content Include="public\Pages\GetLogs\GetLogs.htm">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="public\Pages\Home\Home.htm" />
+    <Content Include="public\Pages\PostLogs\PostLogs.htm" />
+    <Content Include="public\Pages\User\User.htm" />
     <Content Include="tsconfig.json" />
     <Content Include="package.json" />
     <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="css\" />
+    <Folder Include="Keys\" />
     <Folder Include="public\" />
     <Folder Include="public\Logo\" />
     <Folder Include="public\Pages\" />
-    <Folder Include="public\Pages\Home\" />
+    <Folder Include="public\Pages\GetLogs\" />
     <Folder Include="public\Pages\Nav\" />
+    <Folder Include="public\Pages\Home\" />
+    <Folder Include="public\Pages\User\" />
+    <Folder Include="public\Pages\PostLogs\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="public\bundle.js" />

@@ -1,45 +1,39 @@
 ﻿
-
-<div class="container">
-    <form style="padding: 2em 0em 1em 0em">
-        <div class="form-row">
-            <div class="col">
-                <label>KaaToken</label>
-                <input class="form-control" type="text" name="KaaToken" ng-model="ViewModel.body.KaaToken" ng-change="ViewModel.change()" />
-            </div>
-            <div class="col">
-                <label>Category</label>
-                <input class="form-control" type="text" name="Category" ng-model="ViewModel.body.Category" ng-change="ViewModel.change()" />
-            </div>
-            <div class="col">
-                <label>Title</label>
-                <input class="form-control" type="text" name="Title" ng-model="ViewModel.body.Title" ng-change="ViewModel.change()" />
-            </div>
-        </div>
-    </form>
-    
-    
-    
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th>ID</th>
-                <th>KaaToken</th>
-                <th>Category</th>
-                <th>Title</th>
-                <th>Content</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="x in ViewModel.response">
-                <th style="width: 12.5%">{{x._id}}</th>
-                <th style="width: 12.5%">{{x.KaaToken}}</th>
-                <th style="width: 12.5%">{{x.Category}}</th>
-                <th style="width: 12.5%">{{x.Title}}</th>
-                <th style="width: 50%">{{x.Content}}</th>
-            </tr>
-        </tbody>
-    </table>
-</div>
-    
+    <div class="container" style="text-align: center">
+        <h1>Welcome to KaaLogging</h1>
+        <p>
+            Lorem ipsum dolor sit amet, ex fabulas pertinacia voluptatibus qui. Mea in fuisset mediocrem complectitur, an suas epicuri eam.
+            Ne vix oporteat legendos deterruisset, et quo alii viderer, elit singulis ex vis. Pri ut populo meliore, percipit mandamus deterruisset at est, ne commodo iuvaret gubergren per.
+            Mel ad voluptua copiosae insolens, bonorum admodum id ius. Diam alterum ne sea. Mei adhuc viderer ut, tacimates pertinacia vix eu.
+        </p>
+        <h2>How to use</h2>
+        <p>
+            First you need to login via Google in the top right corner<br />
+            Go to your profile page a check your <code>KaaToken</code>, which is used to identify you with your logs.<br />
+        </p>
+        <h3>Get Logs</h3>
+        <p>To get all your logs send a GET request to this URL or go to the <a href="#!/GetLogs">GetLogs</a> section in the top menu</p>
+        <code>
+            http://Mesterkaa.hopto.org:1337/GetLogs?KaaToken=YOUR_KAATOKEN
+        </code>
+        <p class="padding-top">Per standard all your logs will be send back to you. If you want to filter the logs, use the <code>Category</code> and <code>Title</code> paramenters <br />
         
+        </p>
+        <code>
+            KaaToken: YOUR_KAATOKEN  :  <b>Required!</b> <br />
+            Category: CATEGORY_NAME  :  Optional <br />
+            Title: TITLE_NAME        :  Optional
+        </code>
+        <h3 class="padding-top">Post Logs</h3>
+        <p>To create a log send a POST request to this URL or go to the <a href="#!/PostLogs">PostLogs</a> section in the top menu </p>
+        <code>
+            http://Mesterkaa.hopto.org:1337/PostLogs
+        </code>
+        <p class="padding-top">To specifiy <code>Category</code>, <code>Title</code> and <code>Content</code> use the following paramenters</p>
+        <code>
+            KaaToken: YOUR_KAATOKEN  :  <b>Required!</b> <br />
+            Category: CATEGORY_NAME  :  Optional <br />
+            Title: TITLE_NAME        :  Optional <br />
+            Content: CONTENT         :  Optional
+        </code>
+    </div>

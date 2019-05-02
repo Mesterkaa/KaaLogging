@@ -1,0 +1,31 @@
+﻿<div class="container">
+    <h1 style="text-align: center">Post Logs</h1>
+    <form >
+        <div class="form-row">
+            <div class="col">
+                <label>KaaToken</label>
+                <input class="form-control" type="text" name="KaaToken" ng-model="ViewModel.FormContent.KaaToken" readonly />
+            </div>
+            <div class="col">
+                <label>Category</label>
+                <input class="form-control" type="text" name="Category" ng-model="ViewModel.FormContent.Category" />
+            </div>
+            <div class="col">
+                <label>Title</label>
+                <input class="form-control" type="text" name="Title" ng-model="ViewModel.FormContent.Title" />
+            </div>
+        </div>
+        <div class="form-row">
+            <label>Content</label>
+            <textarea class="form-control" type="text" name="Prview" ng-model="ViewModel.FormContent.Content" />
+        </div>
+        <div class="form-row padding-top">
+            <button class="btn btn-success" style="color: black; background-color: #4CAF50" ng-click="ViewModel.Post()">Post Log</button>
+        </div>
+    </form>
+    <div class="padding-top" ng-if="ViewModel.data">
+        <label>Log posted</label>
+        <textarea class="form-control" type="text" name="log" ng-model="ViewModel.data | json" readonly rows="7" />
+    </div>
+</div>
+

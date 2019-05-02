@@ -3,7 +3,35 @@ import { routes, KaaIroute, KaaIrouteConfig } from "./routes";
 var app = angular.module("KaaApp", ['ngRoute']);
 
 app.factory("user", function () {
-    return {};
+    var factory = {
+        KaaToken: "",
+        Name: "",
+        Email: "",
+        ImageUrl: "",
+        setKaaToken: function (value) {
+            factory.KaaToken = value;
+        },
+        setName: function (value) {
+            factory.Name = value;
+        },
+        setEmail: function (value) {
+            factory.Email = value;
+        },
+        setImageUrl: function (value) {
+            factory.ImageUrl = value;
+        },
+        clearUser: function () {
+            factory.KaaToken = "";
+            factory.Name = "";
+            factory.Email = "";
+            factory.ImageUrl = "";
+        }
+
+    };
+    return factory;
+})
+app.factory("routes", function () {
+    return routes;
 })
 
 var appControllerSelfCall: (x: KaaIroute[]) => void = (x: KaaIroute[]) => {
@@ -37,4 +65,4 @@ function routeConfig($routeProvider: ng.route.IRouteProvider): void {
 }
 
 import { NavController } from './Pages/Nav/controller';
-app.controller("NavController", ['$scope', '$http', '$timeout',"user", NavController])
+app.controller("NavController", ['$scope', '$http', '$timeout',"user", "routes", NavController])

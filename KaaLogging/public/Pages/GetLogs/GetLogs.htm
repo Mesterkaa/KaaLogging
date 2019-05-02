@@ -1,0 +1,49 @@
+﻿
+
+    <div class="container">
+        <h1 style="text-align: center">Get Logs</h1>
+        <form >
+            <div class="form-row">
+                <div class="col">
+                    <label>KaaToken</label>
+                    <input class="form-control" type="text" name="KaaToken" ng-model="ViewModel.body.KaaToken" ng-change="ViewModel.change()" readonly />
+                </div>
+                <div class="col">
+                    <label>Category</label>
+                    <input class="form-control" type="text" name="Category" ng-model="ViewModel.body.Category" ng-change="ViewModel.change()" />
+                </div>
+                <div class="col">
+                    <label>Title</label>
+                    <input class="form-control" type="text" name="Title" ng-model="ViewModel.body.Title" ng-change="ViewModel.change()" />
+                </div>
+            </div>
+            <div class="form-row padding-top">
+                <label>Preview Call</label>
+                <textarea class="form-control" type="text" name="Prview" ng-model="ViewModel.PreviewRequestString" readonly />
+            </div>
+        </form>
+
+
+        <table class="table table-responsive">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>KaaToken</th>
+                    <th>Category</th>
+                    <th>Title</th>
+                    <th>Content</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="x in ViewModel.response track by $index">
+                    <th style="width: 12.5%">{{x._id}}</th>
+                    <th style="width: 12.5%">{{x.KaaToken}}</th>
+                    <th style="width: 12.5%">{{x.Category}}</th>
+                    <th style="width: 12.5%">{{x.Title}}</th>
+                    <th style="width: 50%;">{{x.Content}}</th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+        

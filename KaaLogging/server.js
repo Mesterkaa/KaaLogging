@@ -13,11 +13,8 @@ app.use("/styles", express.static(__dirname + "/css/"));
 const mongojs = require("mongojs");
 var dbrw = mongojs('readWrite:myPassword@Mesterkaa.hopto.org:27017/KaaLogging', ['Users', 'Logs']);
 routes(app, dbrw);
+//https.createServer(options, app).listen(1337);
 var server = app.listen(1337, () => {
     console.log("KaaLogging is listening on port 1337");
 });
-class log {
-}
-class User {
-}
 //# sourceMappingURL=server.js.map

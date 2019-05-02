@@ -28,35 +28,39 @@ module.exports = function (app, dbrw) {
                 const useremail = payload['email'];
                 dbrw.Users.find({ GoogleId: userid }, (err, docs) => {
                     if (docs.length == 0) {
-                        var KaaToken = GenerateKaaToken(10);
-                        dbrw.Users.insert({ GoogleId: userid, Name: username, Email: useremail, KaaToken: KaaToken }, (err, docs) => {
-                            res.json(KaaToken);
-                        });
+                        var InsertUser = (KaaToken) => {
+                            dbrw.Users.insert({ GoogleId: userid, Name: username, Email: useremail, KaaToken: KaaToken }, (err, docs) => {
+                                res.json(KaaToken);
+                            });
+                        };
+                        GenerateKaaToken(10, InsertUser);
                     }
                     else {
                         res.json(docs[0].KaaToken);
                     }
                 });
-                console.log(userid);
-                console.log(username);
-                console.log(useremail);
             });
         }
         verify().catch(console.error);
     });
-    app.post('/ViewLogs', (req, res) => {
-        console.log(req.body);
-        if (req.body.KaaToken != undefined) {
+    app.post('/PostLogs', (req, res) => {
+        if (req.body.KaaToken != undefined && req.body.Content != undefined) {
             var AcceptedBool = true;
             for (var x in req.body) {
-                if (["KaaToken", "Category", "Title"].indexOf(x) == -1) {
+                if (["KaaToken", "Category", "Title", "Content"].indexOf(x) == -1) {
                     AcceptedBool = false;
                 }
             }
             if (AcceptedBool) {
-                dbrw.Logs.find(req.body, (err, docs) => {
-                    console.log(docs);
-                    res.json(docs);
+                dbrw.Users.find({ KaaToken: req.body.KaaToken }, (err, docs) => {
+                    if (docs.length != 0) {
+                        dbrw.Logs.insert(req.body, (err, docs) => {
+                            res.json(docs);
+                        });
+                    }
+                    else {
+                        res.send("KaaToken: " + req.body.KaaToken + " doesn't exist");
+                    }
                 });
             }
             else {
@@ -67,13 +71,47 @@ module.exports = function (app, dbrw) {
             res.send("KaaToken not supplied");
         }
     });
-    var GenerateKaaToken = (length) => {
+    app.get('/GetLogs', (req, res) => {
+        if (req.query.KaaToken != undefined) {
+            var AcceptedBool = true;
+            for (var x in req.query) {
+                if (["KaaToken", "Category", "Title"].indexOf(x) == -1) {
+                    AcceptedBool = false;
+                }
+            }
+            if (AcceptedBool) {
+                dbrw.Users.find({ KaaToken: req.query.KaaToken }, (err, docs) => {
+                    if (docs.length != 0) {
+                        dbrw.Logs.find(req.query, (err, docs) => {
+                            res.json(docs);
+                        });
+                    }
+                    else {
+                        res.send("KaaToken: " + req.query.KaaToken + " doesn't exist");
+                    }
+                });
+            }
+            else {
+                res.send("Unknown paramenter send");
+            }
+        }
+        else {
+            res.send("KaaToken not supplied");
+        }
+    });
+    var GenerateKaaToken = (length, callback) => {
         var text = "";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         for (var i = 0; i < length; i++)
             text += possible.charAt(Math.floor(Math.random() * possible.length));
-        return text;
+        dbrw.Users.find({ KaaToken: text }, (err, docs) => {
+            if (docs.length == 0) {
+                callback(text);
+            }
+            else {
+                GenerateKaaToken(10, callback);
+            }
+        });
     };
-    console.log(GenerateKaaToken(20));
 };
 //# sourceMappingURL=routes.js.map

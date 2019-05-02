@@ -36442,6 +36442,52 @@ module.exports = angular;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const viewModel_1 = require("./viewModel");
+class GetLogsController {
+    constructor($scope, $http, $timeout, user) {
+        this._viewModel = new viewModel_1.GetLogsViewModel($scope, $http, user);
+        $scope.ViewModel = this._viewModel;
+    }
+}
+exports.GetLogsController = GetLogsController;
+
+},{"./viewModel":4}],4:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class GetLogsViewModel {
+    constructor($scope, $http, user) {
+        this.body = { KaaToken: "" };
+        $scope.$watch(function () {
+            return user;
+        }, (newValue, oldValue, scope) => {
+            console.log(["GET$watch", newValue]);
+            this.change();
+        }, true);
+        this.change = () => {
+            this.body.KaaToken = user.KaaToken;
+            this.RequestString = "GetLogs?";
+            if (this.body.KaaToken != "" && this.body.KaaToken != undefined) {
+                this.RequestString += "KaaToken=" + this.body.KaaToken;
+            }
+            if (this.body.Category != "" && this.body.Category != undefined) {
+                this.RequestString += "&Category=" + this.body.Category;
+            }
+            if (this.body.Title != "" && this.body.Title != undefined) {
+                this.RequestString += "&Title=" + this.body.Title;
+            }
+            this.PreviewRequestString = "http://Mesterkaa.hopto.org:1337/" + this.RequestString;
+            $http.get(this.RequestString).then((resp) => {
+                this.response = resp.data;
+            });
+        };
+        this.change();
+    }
+}
+exports.GetLogsViewModel = GetLogsViewModel;
+
+},{}],5:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const viewModel_1 = require("./viewModel");
 class HomeController {
     constructor($scope, $http, $timeout, user) {
         this._viewModel = new viewModel_1.HomeViewModel($scope, $http, user);
@@ -36450,81 +36496,177 @@ class HomeController {
 }
 exports.HomeController = HomeController;
 
-},{"./viewModel":4}],4:[function(require,module,exports){
+},{"./viewModel":6}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class HomeViewModel {
     constructor($scope, $http, user) {
-        this.body = { KaaToken: "" };
-        $scope.$watch(function () { return user; }, (newValue, oldValue, scope) => {
-            console.log(newValue);
-            this.body.KaaToken = newValue.KaaToken;
-            this.change();
-        }, true);
-        this.change = () => {
-            this.body.KaaToken = this.body.KaaToken == "" ? undefined : this.body.KaaToken;
-            this.body.Category = this.body.Category == "" ? undefined : this.body.Category;
-            this.body.Title = this.body.Title == "" ? undefined : this.body.Title;
-            $http.post('/ViewLogs', this.body).then((resp) => {
-                this.response = resp.data;
-                console.log(resp);
-            });
-        };
-        this.change();
     }
 }
 exports.HomeViewModel = HomeViewModel;
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const viewModel_1 = require("./viewModel");
 class NavController {
-    constructor($scope, $http, $timeout, user) {
+    constructor($scope, $http, $timeout, user, routes) {
         this._viewModel = new viewModel_1.NavViewModel($scope, $http, user);
         $scope.NavViewModel = this._viewModel;
+        $scope.routes = routes;
     }
 }
 exports.NavController = NavController;
 
-},{"./viewModel":6}],6:[function(require,module,exports){
+},{"./viewModel":8}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class NavViewModel {
     constructor($scope, $http, user) {
+        $scope.$watch(function () {
+            return user;
+        }, (newValue, oldValue, scope) => {
+            console.log(["NAV$watch", newValue]);
+        }, true);
+        this.Click = () => {
+            console.log(user);
+        };
+        gapi.signin2.render('my-signin2', {
+            scope: 'profile email',
+            width: 150,
+            height: 50,
+            longtitle: false,
+            theme: 'dark',
+            onsuccess: (GUser) => {
+                this.googleUser = GUser;
+                $http.get('/SignIn/' + GUser.getAuthResponse().id_token).then((resp) => {
+                    user.KaaToken = resp.data;
+                    user.setKaaToken(resp.data);
+                    user.setName(GUser.getBasicProfile().getName());
+                    user.setEmail(GUser.getBasicProfile().getEmail());
+                    user.setImageUrl(GUser.getBasicProfile().getImageUrl());
+                    this.loggedin = true;
+                });
+            },
+            onfailure: (Error) => {
+                console.error(Error);
+            }
+        });
         this.signOut = () => {
             var auth2 = gapi.auth2.getAuthInstance();
             auth2.signOut().then(() => {
                 console.log(this.googleUser.getBasicProfile().getName() + " signed out");
+                user.clearUser();
+                this.loggedin = false;
+                $scope.$apply();
             });
-            user.KaaToken = "";
-        };
-        this.onSucces = (User) => {
-            this.googleUser = User;
-            $http.get('/SignIn/' + User.getAuthResponse().id_token).then((resp) => {
-                user.KaaToken = resp.data;
-                user.Name = User.getBasicProfile().getName();
-                user.Email = User.getBasicProfile().getEmail();
-                user.ImageUrl = User.getBasicProfile().getImageUrl();
-            });
-            $scope.$apply();
-        };
-        window["onSucces"] = this.onSucces;
-        this.checkuser = () => {
-            console.log(gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile());
         };
     }
 }
 exports.NavViewModel = NavViewModel;
 
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const viewModel_1 = require("./viewModel");
+class PostLogsController {
+    constructor($scope, $http, $timeout, user) {
+        this._viewModel = new viewModel_1.PostLogsViewModel($scope, $http, user);
+        $scope.ViewModel = this._viewModel;
+    }
+}
+exports.PostLogsController = PostLogsController;
+
+},{"./viewModel":10}],10:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class PostLogsViewModel {
+    constructor($scope, $http, user) {
+        this.FormContent = {};
+        $scope.$watch(function () { return user; }, (newValue, oldValue, scope) => {
+            this.FormContent.KaaToken = newValue.KaaToken;
+        }, true);
+        this.Post = () => {
+            if (this.FormContent.KaaToken == "" || this.FormContent.KaaToken == undefined) {
+                delete this.FormContent.KaaToken;
+            }
+            if (this.FormContent.Category == "" || this.FormContent.Category == undefined) {
+                delete this.FormContent.Category;
+            }
+            if (this.FormContent.Title == "" || this.FormContent.Title == undefined) {
+                delete this.FormContent.Title;
+            }
+            if (this.FormContent.Content == "" || this.FormContent.Content == undefined) {
+                delete this.FormContent.Content;
+            }
+            $http.post('/PostLogs', this.FormContent).then((resp) => {
+                this.data = resp.data;
+                this.FormContent = { KaaToken: user.KaaToken };
+            }).catch((err) => {
+                console.error(err);
+            });
+        };
+    }
+}
+exports.PostLogsViewModel = PostLogsViewModel;
+
+},{}],11:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const viewModel_1 = require("./viewModel");
+class UserController {
+    constructor($scope, $http, $timeout, user) {
+        this._viewModel = new viewModel_1.UserViewModel($scope, $http, user);
+        $scope.ViewModel = this._viewModel;
+    }
+}
+exports.UserController = UserController;
+
+},{"./viewModel":12}],12:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class UserViewModel {
+    constructor($scope, $http, user) {
+        this.user = user;
+    }
+}
+exports.UserViewModel = UserViewModel;
+
+},{}],13:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const angular = require("angular");
 const routes_1 = require("./routes");
 var app = angular.module("KaaApp", ['ngRoute']);
 app.factory("user", function () {
-    return {};
+    var factory = {
+        KaaToken: "",
+        Name: "",
+        Email: "",
+        ImageUrl: "",
+        setKaaToken: function (value) {
+            factory.KaaToken = value;
+        },
+        setName: function (value) {
+            factory.Name = value;
+        },
+        setEmail: function (value) {
+            factory.Email = value;
+        },
+        setImageUrl: function (value) {
+            factory.ImageUrl = value;
+        },
+        clearUser: function () {
+            factory.KaaToken = "";
+            factory.Name = "";
+            factory.Email = "";
+            factory.ImageUrl = "";
+        }
+    };
+    return factory;
+});
+app.factory("routes", function () {
+    return routes_1.routes;
 });
 var appControllerSelfCall = (x) => {
     for (var route of x) {
@@ -36556,14 +36698,20 @@ function routeConfig($routeProvider) {
     routeConfigSelfCall(routes_1.routes);
 }
 const controller_1 = require("./Pages/Nav/controller");
-app.controller("NavController", ['$scope', '$http', '$timeout', "user", controller_1.NavController]);
+app.controller("NavController", ['$scope', '$http', '$timeout', "user", "routes", controller_1.NavController]);
 
-},{"./Pages/Nav/controller":5,"./routes":8,"angular":2}],8:[function(require,module,exports){
+},{"./Pages/Nav/controller":7,"./routes":14,"angular":2}],14:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const controller_1 = require("./Pages/Home/controller");
+const controller_1 = require("./Pages/GetLogs/controller");
+const controller_2 = require("./Pages/PostLogs/controller");
+const controller_3 = require("./Pages/Home/controller");
+const controller_4 = require("./Pages/User/controller");
 exports.routes = [
-    { name: 'HOME', config: { URL: "", templateURL: "./Pages/Home/Home.htm", Rcontroller: "HomeController", Acontroller: controller_1.HomeController } }
+    { name: 'HOME', config: { URL: "", templateURL: "./Pages/Home/Home.htm", Rcontroller: "HomeController", Acontroller: controller_3.HomeController } },
+    { name: 'GETLOGS', config: { URL: "GetLogs", templateURL: "./Pages/GetLogs/GetLogs.htm", Rcontroller: "GetLogsController", Acontroller: controller_1.GetLogsController } },
+    { name: 'POSTLOGS', config: { URL: "PostLogs", templateURL: "./Pages/PostLogs/PostLogs.htm", Rcontroller: "PostLogsController", Acontroller: controller_2.PostLogsController } },
+    { name: 'USER', config: { URL: "User", templateURL: "./Pages/User/User.htm", Rcontroller: "UserController", Acontroller: controller_4.UserController } }
 ];
 
-},{"./Pages/Home/controller":3}]},{},[7]);
+},{"./Pages/GetLogs/controller":3,"./Pages/Home/controller":5,"./Pages/PostLogs/controller":9,"./Pages/User/controller":11}]},{},[13]);

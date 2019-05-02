@@ -10,7 +10,9 @@
     <script src="/scripts/jquery/dist/jquery.js"></script>
     <script src="/scripts/angular/angular.js"></script>
     <script src="/scripts/angular-route/angular-route.js"></script>
+    <script src="/scripts/popper.js/dist/umd/popper.js"></script>
     <script src="/scripts/bootstrap/dist/js/bootstrap.js"></script>
+
     <link rel="stylesheet" href="/scripts/bootstrap/dist/css/bootstrap.css" type="text/css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700i" rel="stylesheet">
@@ -21,14 +23,20 @@
     <title>KaaLogging</title>
 </head>
 <body ng-app="KaaApp" ng-controller="NavController">
-    <ul>
-        <li><a href="#!">See Logs</a></li>
-        <li><a href="#!">Make Logs</a></li>
-        <li><a ng-click="NavViewModel.checkuser()">Test</a></li>
-        <li style="float:right"><a ng-click="NavViewModel.checkuser()" class="active">User profil</a></li>
-        <li style="float:right"><div class="g-signin2" data-onsuccess="onSucces"></div></li>
-        <li style="float:right"><a ng-click="NavViewModel.signOut()" class="active">Logout</a></li>
-    </ul>
+    <nav>
+        <ul>
+            <li><a ng-href="#!{{routes[0].config.URL}}">Home</a></li>
+            <li><a ng-href="#!{{routes[1].config.URL}}">Get Logs</a></li>
+            <li><a ng-href="#!{{routes[2].config.URL}}">Post Logs</a></li>
+            <li style="float:right"><div id="my-signin2"></div></li>
+            <li ng-if="NavViewModel.loggedin" style="float:right"><a ng-href="#!{{routes[3].config.URL}}" class="active">User profile</a></li>
+            <li ng-if="NavViewModel.loggedin" style="float:right"><a href="" ng-click="NavViewModel.signOut()" class="active">Logout</a></li>
+
+
+        </ul>
+    </nav>
+    
+    
     <main>
         <section ng-view></section>
     </main>

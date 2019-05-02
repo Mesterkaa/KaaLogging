@@ -1,0 +1,22 @@
+﻿
+    <div class="container">
+        <h1 style="text-align: center">User profile</h1>
+        <form>
+            <div class="form-row">
+                <img ng-src="{{ViewModel.user.ImageUrl}}" class="rounded" />
+            </div>
+            <div class="form-row padding-top">
+                <label>KaaToken</label>
+                <input class="form-control" type="text" name="KaaToken" ng-model="ViewModel.user.KaaToken" readonly />
+            </div>
+            <div class="form-row">
+                <label>Name</label>
+                <input class="form-control" type="text" name="Name" ng-model="ViewModel.user.Name" readonly />
+            </div>
+            <div class="form-row">
+                <label>Email</label>
+                <input class="form-control" type="text" name="Email" ng-model="ViewModel.user.Email" readonly />
+            </div>
+        </form>
+    </div>    
+        

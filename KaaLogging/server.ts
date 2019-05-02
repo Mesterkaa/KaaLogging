@@ -1,5 +1,6 @@
 ﻿
 import express = require('express');
+
 var routes = require('./routes');
 var favicon = require('serve-favicon');
 var app = express();
@@ -17,25 +18,14 @@ import mongojs = require("mongojs");
 var dbrw = mongojs('readWrite:myPassword@Mesterkaa.hopto.org:27017/KaaLogging', ['Users', 'Logs']);
 routes(app, dbrw);
 
+//https.createServer(options, app).listen(1337);
+
+
 
 var server = app.listen(1337, () => {
     console.log("KaaLogging is listening on port 1337");
-    
 })
 
 
-class log {
-    _id: string
-    UserToken: string
-    category: string
-    title: string
-    content: string
-}
 
-class User {
-    _id: string
-    KaaToken
-    GoogleToken: string
-    name: string
-    profileURL: string
-}
+
