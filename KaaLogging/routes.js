@@ -10,9 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const { OAuth2Client } = require('google-auth-library');
 module.exports = function (app, dbrw) {
-    app.get('/KaaToken/:id', (req, res) => {
-        var id = req.params.id;
-    });
     app.get('/SignIn/:id', (req, res) => {
         var id = req.params.id;
         const client = new OAuth2Client("642311383172-771qivssmq9g7l38neqvp3jkh1koo1b2.apps.googleusercontent.com");
@@ -41,7 +38,9 @@ module.exports = function (app, dbrw) {
                 });
             });
         }
-        verify().catch(console.error);
+        verify().catch(() => {
+            res.sendStatus(500);
+        });
     });
     app.post('/PostLogs', (req, res) => {
         if (req.body.KaaToken != undefined && req.body.Content != undefined) {
@@ -59,16 +58,19 @@ module.exports = function (app, dbrw) {
                         });
                     }
                     else {
+                        res.statusCode = 500;
                         res.send("KaaToken: " + req.body.KaaToken + " doesn't exist");
                     }
                 });
             }
             else {
+                res.statusCode = 500;
                 res.send("Unknown paramenter send");
             }
         }
         else {
-            res.send("KaaToken not supplied");
+            res.statusCode = 500;
+            res.send("KaaToken or content not supplied");
         }
     });
     app.get('/GetLogs', (req, res) => {
@@ -87,15 +89,18 @@ module.exports = function (app, dbrw) {
                         });
                     }
                     else {
+                        res.statusCode = 500;
                         res.send("KaaToken: " + req.query.KaaToken + " doesn't exist");
                     }
                 });
             }
             else {
+                res.statusCode = 500;
                 res.send("Unknown paramenter send");
             }
         }
         else {
+            res.statusCode = 500;
             res.send("KaaToken not supplied");
         }
     });
